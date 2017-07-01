@@ -1,0 +1,75 @@
+<!doctype html>
+<html class="no-js" lang="">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Style Transfer</title>
+<link rel="stylesheet" href="../static/css/bootstrap.min.css">
+<link rel="stylesheet" href="../static/css/flexslider.css">
+<link rel="stylesheet" href="../static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="../static/css/main.css">
+<link rel="stylesheet" href="../static/css/responsive.css">
+<link rel="stylesheet" href="../static/css/animate.min.css">
+<link rel="stylesheet" href="../static/css/font-icon.css">
+<link rel="stylesheet" href="../static/css/magnific-popup.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+<!-- header top section -->
+<section class="banner" role="banner">
+  <header id="header">
+    <div class="header-content clearfix">
+      <a class="logo" href="index.html">
+        <img src="../static/images/sys/logo.png" alt="">
+      </a>
+    </div>
+  </header>
+</section>
+<!-- header top section -->  
+<!-- portfolio grid section -->
+<section id="portfolio" class="tm-header-gallery">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <hr class="section">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 portfolio-item"> <a href="{{ url_for('static', filename=original) }}" class="portfolio-link">
+        <img src="{{ url_for('static', filename=original) }}" class="img-responsive tm-header-img img-fluid" alt=""> </a> </div>
+      <div class="col-sm-6 portfolio-item"> <a href="{{ url_for('static', filename=result) }}" class="portfolio-link">
+        <img src="{{ url_for('static', filename=result) }}" class="img-responsive" alt="" id="resuleImage"> </a> </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6" align='right'>
+        <input type="button" class="btn btn-default" value="返回首页" onclick ="location.href='{{ url_for('index',_external=True) }}'"></input>
+    </div>
+      <div class="col-sm-6" align='left'>
+        <input type="button" class="btn btn-default" value="返回上一页" onclick ="javascript :history.back(-1);"></input>
+    </div>
+    </div>
+  </div>
+</section>
+<!-- footer section --> 
+<!-- JS FILES --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.fancybox.pack.js"></script>
+<script src="../static/js/retina.min.js"></script>
+<script src="../static/js/modernizr.js"></script>
+<script src="../static/js/main.js"></script>         
+<script src="../static/js/jquery.magnific-popup.min.js"></script> 
+<script>
+$(window).load(function()
+{
+    $('.tm-header-gallery').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        gallery:{enabled:false}
+    });
+});
+</script>      
+</body>
+</html>

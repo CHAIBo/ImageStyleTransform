@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="no-js" lang="">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Image Style Transfer</title>
+<link rel="stylesheet" href="../static/css/bootstrap.min.css">
+<link rel="stylesheet" href="../static/css/flexslider.css">
+<link rel="stylesheet" href="../static/css/jquery.fancybox.css">
+<link rel="stylesheet" href="../static/css/main.css">
+<link rel="stylesheet" href="../static/css/responsive.css">
+<link rel="stylesheet" href="../static/css/animate.min.css">
+<link rel="stylesheet" href="../static/css/font-icon.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<script>
+//图片上传预览
+function previewImage(file)
+{
+    var MAXWIDTH  = 1000;
+    var MAXHEIGHT = 500;
+    var div = document.getElementById('uploadImage');
+    if (file.files && file.files[0])
+    {
+        div.innerHTML ='<img id=imghead onclick=$("#previewImg").click()>';
+        var img = document.getElementById('imghead');
+        img.onload = function()
+        {
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            img.width  =  rect.width;
+            img.height =  rect.height;
+            img.style.marginTop = rect.top+'px';
+        }
+        var reader = new FileReader();
+        reader.onload = function(evt){img.src = evt.target.result;}
+        reader.readAsDataURL(file.files[0]);
+    }
+    else //兼容IE
+    {
+        var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+        file.select();
+        var src = document.selection.createRange().text;
+        div.innerHTML = '<img id=imghead>';
+        var img = document.getElementById('imghead');
+        img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+        var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+        status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+        div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+    }
+}
+
+function clacImgZoomParam( maxWidth, maxHeight, width, height )
+{
+    var param = {top:0, left:0, width:width, height:height};
+    if( width>maxWidth || height>maxHeight )
+    {
+        rateWidth = width / maxWidth;
+        rateHeight = height / maxHeight;
+        if( rateWidth > rateHeight )
+        {
+            param.width =  maxWidth;
+            param.height = Math.round(height / rateWidth);
+        }else
+        {
+            param.width = Math.round(width / rateHeight);
+            param.height = maxHeight;
+        }
+    }
+    param.left = Math.round((maxWidth - param.width) / 2);
+    param.top = Math.round((maxHeight - param.height) / 2);
+    return param;
+}
+
+window.onload=function()
+{
+    var url = window.location.href;
+    var style=url.substr(url.indexOf("=")+1);
+    document.getElementById("style").value=style;
+}
+
+function validateForm()
+{
+    var x=document.forms["uploadImage"]["image"].value;
+    if (x==null || x=="")
+    {
+        alert("请选择图片！");
+        return false;
+    }
+}
+</script>
+</head>
+<body>
+<!-- header top section -->
+<section class="banner" role="banner">
+  <header id="header">
+    <div class="header-content clearfix">
+      <a class="logo" href="{{ url_for('index',_external=True) }}">
+        <img src="../static/images/sys/logo.png" alt="">
+      </a>
+    </div>
+  </header>
+</section>
+<!-- header top section -->  
+<section id="portfolio">
+  <form name="uploadImage" action="/transform" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <hr class="section">
+          <input type="hidden" id="style" name="style">
+        </div>
+      </div>
+      <div class="row" align='center'>
+        <div class="col-md-12 portfolio-item" id="uploadImage">
+          <img id="imghead" src="../static/images/sys/photo.png" class="img-responsive" onClick="$('#previewImg').click();">
+        </div>
+        <input type="file" onChange="previewImage(this)" style="display: none;" id="previewImg" name="image">
+      </div>
+      <div class="row">
+        <div class="col-sm-6" align='right'>
+          <input type="button" class="btn btn-default" value="返回首页" onclick ="location.href='{{ url_for('index',_external=True) }}'"></input>
+        </div>
+        <div class="col-sm-6" align='left'>
+          <input type="submit" class="btn btn-default" value="风格转换"></input>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+<!-- JS FILES --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.fancybox.pack.js"></script>
+<script src="../static/js/retina.min.js"></script>
+<script src="../static/js/modernizr.js"></script>
+<script src="../static/js/main.js"></script>
+<script src="../static/js/spin.min.js"></script>
+</body>
+</html>
